@@ -1,14 +1,14 @@
 import Constants from 'expo-constants';
-import { useWindowDimensions, Platform } from 'react-native';
+import {useWindowDimensions, Platform} from 'react-native';
 
-/* Return the App Theme Object */
+// Возвращает стиль приложения относительно цветовой схемы устройства
 export default function getTheme(scheme) {
   const { width, height } = useWindowDimensions();
-  const dark = scheme === 'dark';
+  const isDark = (scheme === 'dark');
   const normalize = (size, max) => Math.min(size * (width / 375), max);
 
   return {
-    dark,
+    isDark,
     width,
     height,
     ios: Platform.OS === 'ios',
@@ -19,11 +19,11 @@ export default function getTheme(scheme) {
       success: '#20bf6b',
       warning: '#f39c12',
       error: '#e74c3c',
-      text: dark ? '#f2f2f2' : '#1a1a1a',
-      card: dark ? '#000000' : '#ffffff',
-      background: dark ? '#1a1a1a' : '#f2f2f2',
-      border: dark ? '#f2f2f2dd' : '#1a1a1add',
-      button: dark ? '#1a1a1add' : '#f2f2f2dd',
+      text: isDark ? '#f2f2f2' : '#1a1a1a',
+      card: isDark ? '#000000' : '#ffffff',
+      background: isDark ? '#1a1a1a' : '#f2f2f2',
+      border: isDark ? '#f2f2f2dd' : '#1a1a1add',
+      button: isDark ? '#1a1a1add' : '#f2f2f2dd',
     },
     font: Platform.OS === 'ios' ? 'Avenir Next' : 'Roboto',
     status: Constants.statusBarHeight,
