@@ -44,7 +44,7 @@ function RootNavigator() {
     <BookStack.Navigator
       initialRouteName="Books"
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         cardOverlayEnabled: true,
         cardStyle: { backgroundColor: 'transparent' },
       }}

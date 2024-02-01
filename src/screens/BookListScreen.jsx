@@ -1,9 +1,15 @@
 import React from 'react';
 import { View, Pressable } from 'react-native';
+
 import Animated, {
-  interpolate, withTiming,
-  useAnimatedStyle, useSharedValue, useAnimatedScrollHandler, useAnimatedProps,
+  interpolate,
+  withTiming,
+  useAnimatedStyle,
+  useSharedValue,
+  useAnimatedScrollHandler,
+  useAnimatedProps,
 } from 'react-native-reanimated';
+
 import { useTheme } from '@react-navigation/native';
 import { SharedElement } from 'react-navigation-shared-element';
 import { AntDesign } from '@expo/vector-icons';
@@ -14,23 +20,23 @@ import Text from '../components/Text';
 import BookList from '../components/BookList';
 import { useBooksState } from '../BookStore';
 
-const studies = require('../anims/landscape.json');
+const lottie = require('../anims/landscape.json');
 
 const LottieViewAnimated = Animated.createAnimatedComponent(LottieView);
 
-// Get morning, afternoon, evening
+// Приветствие относительно текущего времени суток
 const getGreeting = () => {
   const hours = (new Date()).getHours();
   if (hours < 12) {
-    return 'Good Morning';
+    return 'Доброе утро!';
   }
   if (hours >= 12 && hours <= 17) {
-    return 'Good Afternoon';
+    return 'Добрый день!';
   }
-  return 'Good Evening';
+  return 'Добрый вечер!';
 };
 
-// home screen
+// Главный экран
 function BookListScreen({ navigation }) {
   const {
     dark, width, colors, margin, navbar, normalize, ios,
@@ -40,25 +46,25 @@ function BookListScreen({ navigation }) {
   const loaded = useSharedValue(0);
   const { books } = useBooksState();
 
-  // fade in screen, slowly if light mode is on
+  // Замедленная прогрузка экрана
   const onLayout = () => {
-    loaded.value = withTiming(1, { duration: dark ? 300 : 600 });
+    loaded.value = withTiming(1, { duration: 300 });
   };
 
-  // scrollview handler
+  // Анимация прокрутки
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: ({ contentOffset }) => {
       scrollY.value = contentOffset.y;
     },
   });
 
-  // go to search screen
+  // Переход на экран поиска книги
   const searchBooks = () => {
     Haptics.selectionAsync();
     navigation.push('BookSearch', { bookList: books });
   };
 
-  // all the styles
+  // Стили
   const styles = {
     screen: useAnimatedStyle(() => ({
       flex: 1,
@@ -130,18 +136,17 @@ function BookListScreen({ navigation }) {
     },
   };
 
-  // filter books into their categories
+  // Выборка книг для списков
   const reading = books.filter((b) => b.status === 'Reading');
   const completed = books.filter((b) => b.status === 'Completed');
   const wishlist = books.filter((b) => b.status === 'Wishlist');
 
-  // render all the lists
   return (
     <Animated.View onLayout={onLayout} style={styles.screen}>
       <Animated.View style={styles.header}>
         <Animated.View style={styles.logo}>
           <LottieViewAnimated
-            source={studies}
+            source={lottie}
             style={styles.lottie}
             animatedProps={styles.lottieProps}
           />
@@ -155,7 +160,7 @@ function BookListScreen({ navigation }) {
               <View style={styles.searchIcon}>
                 <AntDesign color={colors.text} name="search1" size={15} />
               </View>
-              <Text style={styles.searchText}>Find your next book...</Text>
+              <Text style={styles.searchText}>Поиск книг</Text>
             </Animated.View>
           </SharedElement>
         </Pressable>
@@ -166,9 +171,9 @@ function BookListScreen({ navigation }) {
         onScroll={scrollHandler}
         contentContainerStyle={styles.scrollView}
       >
-        <BookList books={reading} title="Reading" />
-        <BookList books={completed} title="Completed" />
-        <BookList books={wishlist} title="Wishlist" />
+        <BookList books={reading} title="Читаю" />
+        <BookList books={completed} title="Прочитано" />
+        <BookList books={wishlist} title="Буду читать" />
       </Animated.ScrollView>
     </Animated.View>
   );

@@ -1,7 +1,12 @@
 import React from 'react';
+
 import {
-  View, StyleSheet, FlatList, Pressable,
+  View,
+  StyleSheet,
+  FlatList,
+  Pressable,
 } from 'react-native';
+
 import Animated, { useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
 import { useTheme, useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
@@ -11,29 +16,29 @@ import Book from './Book';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-// horizontal flatlist of books
+// Горизонтальный прокручиваемый список
 function BookList({ books, title }) {
   const { width, margin, colors } = useTheme();
   const navigation = useNavigation();
   const scrollX = useSharedValue(0);
 
-  // handle horizontal scroll
+  // прокрутка по горизонтали
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: ({ contentOffset }) => {
       scrollX.value = contentOffset.x;
     },
   });
 
-  // go to search screen
+  // переход на страницу поиска
   const searchScreen = () => {
     navigation.push('BookSearch');
   };
 
-  // all styles
+  // стили
   const styles = StyleSheet.create({
     list: {
       backgroundColor: colors.card,
-      paddingTop: (title === 'Reading' ? margin : 0),
+      paddingTop: (title === 'Читаю' ? margin : 0),
     },
     heading: {
       paddingTop: margin,
@@ -57,17 +62,16 @@ function BookList({ books, title }) {
     },
   });
 
-  // empty list placeholder
+  // отображение пустого списка
   const EmptyList = () => (
     <Pressable onPress={searchScreen} style={styles.emptyContainer}>
       <AntDesign color={colors.text} size={27} name="book" />
       <Text size={16} center style={styles.emptyText}>
-        {'I\'m lonely. \n Add something here.'}
+        {'Здесь ничего нет. \n Нажмите чтобы добавить книгу.'}
       </Text>
     </Pressable>
   );
 
-  // render book list
   return (
     <View style={styles.list}>
       <View style={styles.heading}>
@@ -84,7 +88,7 @@ function BookList({ books, title }) {
         keyExtractor={(i) => i.bookId}
         renderItem={({ item, index }) => (
           <Pressable>
-            <Book book={item} index={index} scrollX={scrollX} />
+            <Book book={item} />
           </Pressable>
         )}
         ListEmptyComponent={<EmptyList />}
