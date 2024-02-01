@@ -1,12 +1,12 @@
 import React from 'react';
 import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 
-import BooksScreen from './screens/BooksScreen';
+import StartScreen from './screens/StartScreen';
 import BookListScreen from './screens/BookListScreen';
 import BookDetailsScreen from './screens/BookDetailsScreen';
 import BookSearchScreen from './screens/BookSearchScreen';
 
-// Root Stack of App
+// Навигация между экранами приложения
 function RootNavigator() {
   const BookStack = createSharedElementStackNavigator();
 
@@ -42,15 +42,15 @@ function RootNavigator() {
 
   return (
     <BookStack.Navigator
-      initialRouteName="BookList"
+      initialRouteName="Books"
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         cardOverlayEnabled: true,
         cardStyle: { backgroundColor: 'transparent' },
       }}
       detachInactiveScreens={false}
     >
-      <BookStack.Screen name="Books" component={BooksScreen} />
+      <BookStack.Screen name="StartScreen" component={StartScreen} />
       <BookStack.Screen name="BookList" component={BookListScreen} />
       <BookStack.Screen
         name="BookDetails"

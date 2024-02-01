@@ -6,25 +6,25 @@ import LottieView from 'lottie-react-native';
 import Text from '../components/Text';
 import Button from '../components/Button';
 
-// Import lottie animation
+// Заглавная анимация
 const lottie = require('../anims/reading.json');
 
-// Default screen
-function Books({ navigation }) {
+// Начальный экран приложения
+function StartScreen({navigation}) {
   const { colors, margin, normalize } = useTheme();
 
-  // Styles
+  // Стили
   const styles = StyleSheet.create({
     screen: {
       backgroundColor: colors.background,
     },
     scroll: {
-      paddingVertical: margin,
+      paddingVertical: margin * 3,
       paddingHorizontal: margin * 2,
     },
     lottie: {
       alignSelf: 'center',
-      marginRight: margin / 2,
+      marginRight: margin / 1,
       width: normalize(320, 400),
     },
     title: {
@@ -38,6 +38,8 @@ function Books({ navigation }) {
       fontWeight: '500',
       marginTop: margin,
       marginBottom: margin * 2,
+      textAlign: "center",
+      lineHeight: 24,
     },
   });
 
@@ -45,16 +47,16 @@ function Books({ navigation }) {
     <ScrollView style={styles.screen} centerContent contentContainerStyle={styles.scroll}>
       <LottieView autoPlay loop style={styles.lottie} source={lottie} />
       <Text bold center style={styles.title}>
-        {'Modern \n Book List'}
+        {'Библиотека'}
       </Text>
-      <Text center style={styles.subTitle}>
-        Its never been easier to organize your reading list in one place.
+      <Text style={styles.subTitle}>
+        {'Приложение на React Native. \n Выполнил Мовенко Константин \n ИС/б-21-2-о'}
       </Text>
       <Button onPress={() => navigation.push('BookList')}>
-        Get Started
+        Начать работу
       </Button>
     </ScrollView>
   );
 }
 
-export default React.memo(Books);
+export default React.memo(StartScreen);
