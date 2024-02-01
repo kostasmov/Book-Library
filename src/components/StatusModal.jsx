@@ -7,24 +7,24 @@ import * as Haptics from 'expo-haptics';
 import { proxy, useSnapshot } from 'valtio';
 
 import Text from './Text';
-import { useToast } from './Toast';
+//import { useToast } from './Toast';
 import { useBooksState, setBookState } from '../BookStore';
 
-// create store using zustant & immer
+// ???
 const state = proxy({
   book: null,
 });
 
-// book modal using modalize
+// Модальное окно с информацией о книге
 export default function StatusModal() {
-  const toast = useToast();
+  //const toast = useToast();
   const { colors, margin, status } = useTheme();
   const { book } = useSnapshot(state);
   const { books } = useBooksState();
-  const { addBook, updateBook, removeBook } = setBookState();
+  //const { addBook, updateBook, removeBook } = setBookState();
   const ref = useRef();
 
-  // modal styles
+  // стиль модального окна
   const styles = StyleSheet.create({
     modal: {
       borderTopLeftRadius: 25,
@@ -57,20 +57,21 @@ export default function StatusModal() {
     },
   });
 
-  // close status bottom sheet
+  // закрытие модального окна
   const closeSheet = () => {
     Haptics.notificationAsync('success');
     ref.current?.close();
   };
 
-  // reset state on close
+  // ???
   const onClosed = () => {
     state.book = null;
   };
 
-  // find book to update or remove from list
+  // ???
   const updateList = (list) => {
-    const index = books.findIndex((b) => b.bookId === book.bookId);
+    console.log('update list не работает(((');
+    /*const index = books.findIndex((b) => b.bookId === book.bookId);
     if (index === -1) {
       addBook(book, list);
       toast.show(`Book added to ${list}!`);
@@ -81,17 +82,17 @@ export default function StatusModal() {
       updateBook(book, list);
       toast.show(`Book moved to ${list}!`);
     }
-    closeSheet();
+    closeSheet();*/
   };
 
-  // if book set, open modal
+  // ???
   useEffect(() => {
     if (book) {
       ref.current?.open();
     }
   }, [book]);
 
-  // find the book in lists
+  // ???
   let item = books.find((b) => b.bookId === book?.bookId);
   if (!item) item = book;
 
@@ -113,7 +114,7 @@ export default function StatusModal() {
         <Text numberOfLines={1} style={[styles.bookTitle, styles.marginB]}>
           {item?.bookTitleBare}
         </Text>
-        <Pressable onPress={() => updateList('Reading')} style={[styles.flexRow, styles.marginB]}>
+        <Pressable onPress={updateList('Reading')} style={[styles.flexRow, styles.marginB]}>
           <AntDesign name="rocket1" style={styles.iconLeft} />
           <Text size={17} style={styles.statusText}>Reading</Text>
           <AntDesign size={21} color={colors.text} name={item?.status === 'Reading' ? 'check' : ''} />
@@ -136,7 +137,7 @@ export default function StatusModal() {
   );
 }
 
-// export dispatch
+// ???
 export const setModal = (book) => {
   state.book = book;
 };

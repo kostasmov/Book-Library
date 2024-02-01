@@ -9,7 +9,7 @@ const mockData = [
         bookTitleBare: 'Bare title',
         imageUrl:'https://www.texanerin.com/content/uploads/2019/06/nobake-chocolate-cookies-1-650x975.jpg',
         description: 'this is a good book',
-        relatedIds: [2,3],
+        relatedIds: [],
         author: {
             name: 'David King',
             image_url: 'https://th.bing.com/th/id/OIP.p0a8fUSQQAd99wh0AZdPJAHaEo?w=155&h=182&c=7&r=0&o=5&pid=1.7',
@@ -93,6 +93,7 @@ const mockData = [
     },
 ]
 
-export default async function setMockData(){
+// Выгрузка книг в хранилище
+export default async function setMockData() {
     return await AsyncStorage.setItem('@lists', JSON.stringify(mockData))
 }

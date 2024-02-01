@@ -3,7 +3,7 @@ import { Text, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import Animated from 'react-native-reanimated';
 
-// Themeable / Animatable Text
+// Стилизованный/анимированный текст
 function AnimatedText(props) {
   const { colors, font } = useTheme();
   const {
@@ -18,7 +18,6 @@ function AnimatedText(props) {
     textAlign: center ? 'center' : null,
   });
 
-  // Animatable
   if (animated) {
     return (
       <Animated.Text allowFontScaling={false} {...props} style={[styles, style]}>

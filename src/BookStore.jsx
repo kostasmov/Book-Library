@@ -1,49 +1,51 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { proxy, useSnapshot } from 'valtio';
-import loadMockData from './mock.js'
+import setMockData from './mock.js'
 
-// global state
+// Реактивный объект с информацией о книгах
 const state = proxy({
   books: [],
 });
 
-// load books from async storage once
+// Загрузка книг из хранилища
 async function loadBooks() {
   const json = await AsyncStorage.getItem('@lists');
   const data = json ? JSON.parse(json) : [];
   state.books = data;
 }
 
-
-loadMockData().then(()=>{
-  setTimeout(()=>{
+// Связывание mock.js и books через хранилище
+setMockData().then(() => {
+  setTimeout(() => {
     loadBooks();
-  },100)
+  }, 100)
 })
 
-
-// save books to async storage
-async function saveBooks() {
+// Обновление данных в хранилище
+/*async function saveBooks() {
   AsyncStorage.setItem('@lists', JSON.stringify(state.books));
-}
+}*/
 
-// export fruit state as snapshot
+// Глобальный экспорт данных из books
 export const useBooksState = () => useSnapshot(state);
 
-// export functions to update state
-export const setBookState = () => ({
+// ???
+/*export const setBookState = () => ({
   addBook: (book, status) => {
     state.books.unshift({ ...book, status });
     saveBooks();
+    console.log('addBooks');
   },
   updateBook: (book, status) => {
     const index = state.books.findIndex((b) => b.bookId === book.bookId);
     if (index !== -1) state.books[index] = { ...book, status };
     saveBooks();
+    console.log('updateBooks');
   },
   removeBook: (book) => {
     const index = state.books.findIndex((b) => b.bookId === book.bookId);
     if (index !== -1) state.books.splice(index, 1);
     saveBooks();
+    console.log('removeBooks');
   },
-});
+});*/

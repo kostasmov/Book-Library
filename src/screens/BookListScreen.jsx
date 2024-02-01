@@ -160,7 +160,7 @@ function BookListScreen({ navigation }) {
           </SharedElement>
         </Pressable>
       </Animated.View>
-
+    
       <Animated.ScrollView
         scrollEventThrottle={1}
         onScroll={scrollHandler}
