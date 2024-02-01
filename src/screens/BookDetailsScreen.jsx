@@ -1,18 +1,27 @@
-/* eslint-disable no-param-reassign */
 import React, { useState, useEffect, useRef } from 'react';
+
 import {
-  View, Image, StatusBar, Pressable, StyleSheet,
+  View,
+  Image,
+  StatusBar,
+  Pressable,
+  StyleSheet,
 } from 'react-native';
+
 import Animated, {
-  interpolate, withTiming, runOnJS,
-  useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, useAnimatedScrollHandler,
+  interpolate,
+  withTiming,
+  runOnJS,
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  useAnimatedScrollHandler,
 } from 'react-native-reanimated';
+
 import { PanGestureHandler, ScrollView } from 'react-native-gesture-handler';
 import { useTheme, useIsFocused } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
-import { XMLParser } from 'fast-xml-parser';
 import * as Haptics from 'expo-haptics';
-import axios from 'axios';
 
 import Text from '../components/Text';
 import List from '../components/BookList';
@@ -21,8 +30,6 @@ import BookHeader from '../components/BookHeader';
 import { useBooksState } from '../BookStore';
 import { setModal } from '../components/StatusModal';
 
-const Console = console;
-const parser = new XMLParser();
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 // Get icon for status button

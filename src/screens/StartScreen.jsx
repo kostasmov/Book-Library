@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 
@@ -10,17 +10,15 @@ import Button from '../components/Button';
 const lottie = require('../anims/reading.json');
 
 // Начальный экран приложения
-function StartScreen({navigation}) {
+function StartScreen({ navigation }) {
   const { colors, margin, normalize } = useTheme();
 
   // Стили
   const styles = StyleSheet.create({
     screen: {
       backgroundColor: colors.background,
-    },
-    scroll: {
-      paddingVertical: margin * 3,
-      paddingHorizontal: margin * 2,
+      margin: 55,
+      marginTop: 70,
     },
     lottie: {
       alignSelf: 'center',
@@ -44,7 +42,7 @@ function StartScreen({navigation}) {
   });
 
   return (
-    <ScrollView style={styles.screen} centerContent contentContainerStyle={styles.scroll}>
+    <View style={styles.screen} centerContent>
       <LottieView autoPlay loop style={styles.lottie} source={lottie} />
       <Text bold center style={styles.title}>
         {'Библиотека'}
@@ -55,7 +53,7 @@ function StartScreen({navigation}) {
       <Button onPress={() => navigation.push('BookList')}>
         Начать работу
       </Button>
-    </ScrollView>
+    </View>
   );
 }
 

@@ -1,25 +1,37 @@
 import React, { useState, useEffect } from 'react';
+
 import {
-  View, TextInput, Alert, StyleSheet, Pressable, Keyboard,
+  View,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  Keyboard,
 } from 'react-native';
+
 import Animated, {
-  interpolate, Extrapolate, withTiming, useSharedValue, useAnimatedScrollHandler, useAnimatedStyle,
+  interpolate,
+  Extrapolate,
+  withTiming,
+  useSharedValue,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  color,
 } from 'react-native-reanimated';
+
 import { SharedElement } from 'react-navigation-shared-element';
 import { useTheme } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
 import * as Haptics from 'expo-haptics';
-import axios from 'axios';
 
 import Text from '../components/Text';
 import Book from '../components/SearchBook';
 import { useBooksState } from '../BookStore';
 import { setModal } from '../components/StatusModal';
 
-const stack = require('../anims/stack.json');
+const lottie = require('../anims/stack.json');
 
-// Default screen
+// Страница поиска книг
 function BookSearchScreen({ navigation }) {
   const {
     colors, height, margin, status, navbar,
@@ -63,7 +75,7 @@ function BookSearchScreen({ navigation }) {
 
   useEffect(() => {
     if (query.length > 0) {
-      const matchList =  bookList.filter(item=>item.bookTitleBare.includes(query)||item.description.includes(query)||item.author.name.includes(query))
+      const matchList =  bookList.filter(item=>item.title.includes(query) || item.author.name.includes(query))
       setBooks(matchList)
     }
   }, [query]);
@@ -90,7 +102,7 @@ function BookSearchScreen({ navigation }) {
     })),
   };
 
-  // Other styles
+  // Стили
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
@@ -102,6 +114,10 @@ function BookSearchScreen({ navigation }) {
     },
     searchIcon: {
       width: 30,
+      opacity: 0.3,
+    },
+    closeIcon: {
+      margin: 5,
       opacity: 0.3,
     },
     searchInput: {
@@ -119,6 +135,7 @@ function BookSearchScreen({ navigation }) {
       height: 38,
       width: '100%',
       fontSize: 16,
+      color: '#A9A9A9',
     },
     saveButton: {
       width: 60,
@@ -146,23 +163,22 @@ function BookSearchScreen({ navigation }) {
     },
   });
 
-  // empty screen placeholders
+  // Заполнение при пустом экране
   const PlaceHolder = () => (
     <View style={styles.placeholderBox}>
       <LottieView
         autoPlay
         loop={false}
         speed={0.8}
-        source={stack}
+        source={lottie}
         style={styles.placeholderImg}
       />
       <Text center style={styles.placeholderText}>
-        You can search by book title, author, keywords etc...
+        Ищите книги по названию или имени автора.
       </Text>
     </View>
   );
 
-  // render search page
   return (
     <View onLayout={onLayout} style={styles.screen}>
       <Animated.View style={anims.search}>
@@ -178,12 +194,12 @@ function BookSearchScreen({ navigation }) {
               autoCorrect={false}
               style={styles.textInput}
               onChangeText={(text) => setQuery(text)}
-              placeholder="Find your next book..."
+              placeholder="Поиск книг"
             />
           </View>
         </SharedElement>
-        <Pressable onPress={goBack}>
-          <Text bold style={styles.saveButton}>Done</Text>
+        <Pressable style={styles.closeIcon} onPress={goBack}>
+          <AntDesign color={colors.text} name="close" size={30} />
         </Pressable>
       </Animated.View>
 
@@ -200,7 +216,6 @@ function BookSearchScreen({ navigation }) {
           <Pressable
             key={book.bookId}
             onPress={() => bookDetails(book)}
-            onLongPress={() => editStatus(book)}
           >
             <Book book={book} bookList={bookList} />
           </Pressable>
