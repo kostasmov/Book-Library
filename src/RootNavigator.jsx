@@ -16,19 +16,7 @@ function RootNavigator() {
     },
   });
 
-  const bookTransition = {
-    animation: 'spring',
-    config: {
-      mass: 3,
-      damping: 300,
-      stiffness: 1000,
-      overshootClamping: false,
-      restDisplacementThreshold: 10,
-      restSpeedThreshold: 10,
-    },
-  };
-
-  const searchTranstion = {
+  const transition = {
     animation: 'spring',
     config: {
       mass: 3,
@@ -65,25 +53,19 @@ function RootNavigator() {
           gestureEnabled: false,
           cardStyleInterpolator: fadeScreen,
           transitionSpec: {
-            open: bookTransition,
-            close: bookTransition,
+            open: transition,
+            close: transition,
           },
         }}
       />
       <BookStack.Screen
         name="BookSearch"
         component={BookSearchScreen}
-        sharedElements={(_, otherRoute) => (otherRoute.name === 'BookList' ? [{
-          id: 'search',
-          animation: 'fade',
-          resize: 'clip',
-          align: 'left-top',
-        }] : [])}
         options={{
           cardStyleInterpolator: fadeScreen,
           transitionSpec: {
-            open: searchTranstion,
-            close: searchTranstion,
+            open: transition,
+            close: transition,
           },
         }}
       />

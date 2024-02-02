@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { View, Image } from 'react-native';
 import { SharedElement } from 'react-navigation-shared-element';
@@ -7,25 +6,25 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import Text from './Text';
 
-// star rating
+// Рейтинг в виде звёзд
 const Rating = React.memo(({ rating }) => (
   <View style={{ width: 90, flexDirection: 'row', justifyContent: 'space-between' }}>
-    <FontAwesome size={16} name={rating < 0.5 ? 'star-o' : rating < 0.5 ? 'star-half-o' : 'star'} color="#f39c12" />
-    <FontAwesome size={16} name={rating < 1.5 ? 'star-o' : rating < 1.5 ? 'star-half-o' : 'star'} color="#f39c12" />
-    <FontAwesome size={16} name={rating < 2.5 ? 'star-o' : rating < 2.5 ? 'star-half-o' : 'star'} color="#f39c12" />
-    <FontAwesome size={16} name={rating < 3.5 ? 'star-o' : rating < 3.5 ? 'star-half-o' : 'star'} color="#f39c12" />
-    <FontAwesome size={16} name={rating < 4.5 ? 'star-o' : rating < 4.5 ? 'star-half-o' : 'star'} color="#f39c12" />
+    <FontAwesome size={16} name={rating < 0.5 ? 'star-o' : rating < 0.8 ? 'star-half-o' : 'star'} color="#f39c12" />
+    <FontAwesome size={16} name={rating < 1.5 ? 'star-o' : rating < 1.8 ? 'star-half-o' : 'star'} color="#f39c12" />
+    <FontAwesome size={16} name={rating < 2.5 ? 'star-o' : rating < 2.8 ? 'star-half-o' : 'star'} color="#f39c12" />
+    <FontAwesome size={16} name={rating < 3.5 ? 'star-o' : rating < 3.8 ? 'star-half-o' : 'star'} color="#f39c12" />
+    <FontAwesome size={16} name={rating < 4.5 ? 'star-o' : rating < 4.8 ? 'star-half-o' : 'star'} color="#f39c12" />
   </View>
 ));
 
-// render search screen book
+// Иконка книги при поиске
 function Book({ book, bookList }) {
   const { margin, colors, normalize } = useTheme();
   const BOOKW = normalize(120, 150);
   const BOOKH = BOOKW * 1.5;
   const item = bookList.find((b) => b.bookId === book.bookId);
 
-  // styles
+  // стили
   const styles = {
     bookBox: {
       flexDirection: 'row',
@@ -47,12 +46,11 @@ function Book({ book, bookList }) {
       justifyContent: 'center',
       paddingLeft: margin * 1.5,
     },
-    bookAuthor: {
-      marginVertical: margin / 4,
+    bookTitle: {
+      marginVertical: margin / 3,
     },
   };
 
-  // render serach book
   return (
     <View style={styles.bookBox}>
       <SharedElement id={book.bookId}>
@@ -64,14 +62,25 @@ function Book({ book, bookList }) {
       <View style={styles.bookDetails}>
         {item?.status && (
           <Text bold color={colors.primary}>
-            {item.status}
+            {(() => {
+              switch (item.status) {
+                case 'Reading':
+                  return 'Читаю';
+                case 'Completed':
+                  return 'Прочитано';
+                case 'Wishlist':
+                  return 'Буду читать';
+                default:
+                  return '';
+              }
+            })()}
           </Text>
         )}
         <Text bold size={17} numberOfLines={2}>
           {book.bookTitleBare}
         </Text>
-        <Text style={styles.bookAuthor}>
-          {book.author.name}
+        <Text style={styles.bookTitle}>
+          {book.title}
         </Text>
         <Rating rating={book.avgRating} />
       </View>

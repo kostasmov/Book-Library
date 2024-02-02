@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import {
   View,
   Image,
   StyleSheet,
-  LayoutAnimation,
   Pressable,
 } from 'react-native';
 
@@ -18,7 +17,7 @@ import { SharedElement } from 'react-navigation-shared-element';
 import Text from './Text';
 
 // Компонент книги из списка
-function Book({ book}) {
+function Book({ book }) {
   const navigation = useNavigation();
   const { margin, normalize } = useTheme();
 

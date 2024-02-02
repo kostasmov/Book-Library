@@ -14,7 +14,6 @@ import { useTheme } from '@react-navigation/native';
 import { SharedElement } from 'react-navigation-shared-element';
 import { AntDesign } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
-import * as Haptics from 'expo-haptics';
 
 import Text from '../components/Text';
 import BookList from '../components/BookList';
@@ -60,7 +59,6 @@ function BookListScreen({ navigation }) {
 
   // Переход на экран поиска книги
   const searchBooks = () => {
-    Haptics.selectionAsync();
     navigation.push('BookSearch', { bookList: books });
   };
 
@@ -155,7 +153,7 @@ function BookListScreen({ navigation }) {
           {getGreeting()}
         </Text>
         <Pressable onPress={searchBooks}>
-          <SharedElement id="search">
+          <SharedElement>
             <Animated.View size={15} style={styles.searchInput}>
               <View style={styles.searchIcon}>
                 <AntDesign color={colors.text} name="search1" size={15} />
@@ -165,7 +163,7 @@ function BookListScreen({ navigation }) {
           </SharedElement>
         </Pressable>
       </Animated.View>
-    
+
       <Animated.ScrollView
         scrollEventThrottle={1}
         onScroll={scrollHandler}

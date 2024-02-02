@@ -5,29 +5,17 @@ import {
   TextInput,
   StyleSheet,
   Pressable,
-  Keyboard,
 } from 'react-native';
 
-import Animated, {
-  interpolate,
-  Extrapolate,
-  withTiming,
-  useSharedValue,
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  color,
-} from 'react-native-reanimated';
-
+import Animated from 'react-native-reanimated';
 import { SharedElement } from 'react-navigation-shared-element';
 import { useTheme } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
-import * as Haptics from 'expo-haptics';
 
 import Text from '../components/Text';
-import Book from '../components/SearchBook';
+import SearchBook from '../components/SearchBook';
 import { useBooksState } from '../BookStore';
-import { setModal } from '../components/StatusModal';
 
 const lottie = require('../anims/stack.json');
 
@@ -39,50 +27,35 @@ function BookSearchScreen({ navigation }) {
   const { books: bookList } = useBooksState();
   const [query, setQuery] = useState('');
   const [books, setBooks] = useState([]);
-  const scrollY = useSharedValue(0);
-  const loaded = useSharedValue(0);
 
-  // animate on screen load
-  const onLayout = () => {
-    loaded.value = withTiming(1);
-  };
-
-  // scroll handler
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    scrollY.value = event.contentOffset.y;
-  });
-
-  // go to home screen
+  // вернуться на главный экран
   const goBack = () => {
-    loaded.value = withTiming(0);
-    Haptics.selectionAsync();
     navigation.goBack();
   };
 
-  // view book details
-  // hide on current screen
-  const bookDetails = (book) => {
-    Haptics.selectionAsync();
+  // переход на страницу книги
+  const onBookDetails = (book) => {
     navigation.push('BookDetails', { book });
   };
 
-  // edit selected book
-  const editStatus = (book) => {
-    setModal(book);
-    Keyboard.dismiss();
-    Haptics.selectionAsync();
-  };
-
+  // поиск книг по запросу
   useEffect(() => {
-    if (query.length > 0) {
-      const matchList =  bookList.filter(item=>item.title.includes(query) || item.author.name.includes(query))
-      setBooks(matchList)
+    if (query.length > 1) {
+      const matchList = bookList.filter(item =>
+        item.title.toLowerCase().includes(query.toLowerCase()) ||
+        item.author.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setBooks(matchList);
     }
   }, [query]);
 
-  // animated styles
-  const anims = {
-    search: useAnimatedStyle(() => ({
+  // стили
+  const styles = StyleSheet.create({
+    screen: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    search: {
       zIndex: 10,
       height: navbar,
       alignItems: 'flex-end',
@@ -91,21 +64,6 @@ function BookSearchScreen({ navigation }) {
       paddingBottom: 6,
       paddingHorizontal: margin / 2,
       justifyContent: 'space-between',
-      backgroundColor: colors.background,
-      shadowOpacity: interpolate(scrollY.value, [0, 20], [0, 0.75], Extrapolate.CLAMP),
-    })),
-    scrollView: useAnimatedStyle(() => ({
-      opacity: interpolate(loaded.value, [0, 1], [0, 1], Extrapolate.CLAMP),
-      transform: [
-        { translateY: interpolate(loaded.value, [0, 1], [50, 0], Extrapolate.CLAMP) },
-      ],
-    })),
-  };
-
-  // Стили
-  const styles = StyleSheet.create({
-    screen: {
-      flex: 1,
       backgroundColor: colors.background,
     },
     sharedElement: {
@@ -180,9 +138,9 @@ function BookSearchScreen({ navigation }) {
   );
 
   return (
-    <View onLayout={onLayout} style={styles.screen}>
-      <Animated.View style={anims.search}>
-        <SharedElement style={styles.sharedElement} id="search">
+    <View style={styles.screen}>
+      <Animated.View style={styles.search}>
+        <SharedElement style={styles.sharedElement}>
           <View size={15} style={styles.searchInput}>
             <View style={styles.searchIcon}>
               <AntDesign color={colors.text} name="search1" size={15} />
@@ -204,20 +162,16 @@ function BookSearchScreen({ navigation }) {
       </Animated.View>
 
       <Animated.ScrollView
-        onScroll={scrollHandler}
         scrollEventThrottle={1}
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.scrollContainer}
-        style={anims.scrollView}
       >
         {!books.length && <PlaceHolder />}
         {books.map((book) => (
           <Pressable
             key={book.bookId}
-            onPress={() => bookDetails(book)}
+            onPress={() => onBookDetails(book)}
           >
-            <Book book={book} bookList={bookList} />
+            <SearchBook book={book} bookList={bookList} />
           </Pressable>
         ))}
       </Animated.ScrollView>
