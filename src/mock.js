@@ -3,17 +3,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 let mockData = [
     {
         bookId: 1,
-        status: '',
+        status: 'Wishlist',
         numPages: 150,
         avgRating: 3.6,
         title: 'Bare title',
         imageUrl: 'https://www.texanerin.com/content/uploads/2019/06/nobake-chocolate-cookies-1-650x975.jpg',
-        description: 'this is a good book',
+        description: 'Лев Николаевич //\\\\\Толстой (1828-1910) — русский писатель, мыслитель и философ, один из величайших литературных гений своего времени. Толстой известен своими глубокими и философскими произведениями, которые оставили неизгладимый след в мировой литературе.',
         relatedIds: [],
         author: {
             name: 'David King',
             image_url: 'https://th.bing.com/th/id/OIP.p0a8fUSQQAd99wh0AZdPJAHaEo?w=155&h=182&c=7&r=0&o=5&pid=1.7',
-            about: 'dwqnjkdwnqwjk 1223',
+            about: 'Лев <<>>>Николаевич Толстой (1828-1910) — русский писатель, мыслитель и философ, один из величайших литературных гений своего времени. Толстой известен своими глубокими и философскими произведениями, которые оставили неизгладимый след в мировой литературе.',
         },
     },
     {

@@ -6,7 +6,7 @@ import { useTheme } from '@react-navigation/native';
 
 import Text from './Text';
 
-// Load a single book
+// Баннер страницы книги
 function BookHeader({ scrollY, book }) {
   const {
     width, margin, colors, normalize, navbar, status,
@@ -15,7 +15,7 @@ function BookHeader({ scrollY, book }) {
   const BOOKH = BOOKW * 1.5;
   const HEADER = normalize(width + status, 500);
 
-  // Animated styles
+  // Стили анимации
   const anims = {
     header: useAnimatedStyle(() => ({
       width,
@@ -24,7 +24,7 @@ function BookHeader({ scrollY, book }) {
       paddingTop: status,
       position: 'absolute',
       justifyContent: 'center',
-      shadowOffset: { height: 2 },
+      //shadowOffset: { height: 2 },
       backgroundColor: colors.card,
       shadowOpacity: interpolate(scrollY.value, [HEADER - navbar - 20, HEADER - navbar], [0, 0.25], 'clamp'),
       transform: [
@@ -66,7 +66,7 @@ function BookHeader({ scrollY, book }) {
     })),
   };
 
-  // Styles
+  // Стили
   const styles = StyleSheet.create({
     imgBox: {
       borderRadius: 10,
@@ -99,7 +99,7 @@ function BookHeader({ scrollY, book }) {
 
       <Animated.View style={anims.title}>
         <Text bold center size={21} numberOfLines={2}>{book.bookTitleBare}</Text>
-        <Text size={17} style={styles.author}>{`by ${book.author.name}`}</Text>
+        <Text size={17} style={styles.author}>{`${book.author.name}`}</Text>
       </Animated.View>
 
       <Animated.View style={anims.title2}>

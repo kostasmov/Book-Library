@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
 import {
   View,
   Image,
-  StatusBar,
   Pressable,
   StyleSheet,
 } from 'react-native';
@@ -12,51 +11,29 @@ import Animated, {
   interpolate,
   withTiming,
   runOnJS,
-  useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 
-import { PanGestureHandler, ScrollView } from 'react-native-gesture-handler';
-import { useTheme, useIsFocused } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useTheme } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 
 import Text from '../components/Text';
 import List from '../components/BookList';
-import Button from '../components/Button';
 import BookHeader from '../components/BookHeader';
 import { useBooksState } from '../BookStore';
-import { setModal } from '../components/StatusModal';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
-
-// ???
-const getIcon = (stat) => {
-  switch (stat) {
-    case 'Reading':
-      return 'rocket1';
-    case 'Completed':
-      return 'Trophy';
-    case 'Wishlist':
-      return 'book';
-    default:
-      return 'plus';
-  }
-};
 
 // Страница с информацией о книге
 function BookDetailsScreen({ navigation, route }) {
   const { book } = route.params;
   const { books: bookList } = useBooksState();
-
-  const [related, setRelated] = useState([]);
-  const [fullBook, setFullBook] = useState(null);
-  const [author, setAuthor] = useState(null);
   const [enabled, setEnabled] = useState(true);
 
-  const panRef = useRef();
   const loaded = useSharedValue(0);
   const y = useSharedValue(0);
   const x = useSharedValue(0);
@@ -74,13 +51,12 @@ function BookDetailsScreen({ navigation, route }) {
     navigation.goBack();
   };
 
-  // ???
+  // ЗДЕСЬ ДОЛЖНА БЫТЬ ФУНКЦИЯ СМЕНЫ СТАТУСА КНИГИ
   const openSheet = () => {
     Haptics.selectionAsync();
-    setModal(book);
   };
 
-  // ???
+  // Анимация прокрутки
   const scrollHandler = useAnimatedScrollHandler(({ contentOffset }) => {
     scrollY.value = contentOffset.y;
     if (contentOffset.y <= 0 && !enabled) {
@@ -91,49 +67,7 @@ function BookDetailsScreen({ navigation, route }) {
     }
   });
 
-  // Закрытие страницы через свайп влево
-  const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_, ctx) => {
-      ctx.moved = moved.value;
-      ctx.startX = x.value;
-      ctx.startY = y.value;
-    },
-    onActive: (e, ctx) => {
-      moved.value = ctx.moved + Math.max(e.translationY, e.translationX);
-      ctx.velocity = Math.max(e.velocityX, e.velocityY);
-      y.value = ctx.startY + e.translationY;
-      x.value = ctx.startX + e.translationX;
-
-      // closing screen? do it!
-      if ((moved.value >= 75)) {
-        if (closing.value === 0.9) runOnJS(goBack)();
-        closing.value = withTiming(0.25);
-      }
-    },
-    onEnd: (e, ctx) => {
-      if (moved.value < 75 && ctx.velocity < 750) {
-        y.value = withTiming(0);
-        x.value = withTiming(0);
-        moved.value = withTiming(0);
-      }
-    },
-  });
-
-  // Find book in list
-  const item = bookList.find((b) => b.bookId === book.bookId);
-
-  // Load book details
-  useEffect(() => {
-    Promise.resolve(item).then(bookContent => {
-      setFullBook(bookContent)
-      setAuthor(bookContent.author || {});
-      const relatedBooks = bookList.filter(el => bookContent.relatedIds && bookContent.relatedIds.includes(el.bookId))
-      setRelated(relatedBooks)
-      loaded.value = withTiming(1);
-    })
-  }, [book]);
-
-  // Screen anims
+  // Стили анимации
   const anims = {
     screen: useAnimatedStyle(() => ({
       flex: 1,
@@ -146,27 +80,21 @@ function BookDetailsScreen({ navigation, route }) {
       ],
       borderRadius: interpolate(moved.value, [0, 10], [0, 30], 'clamp'),
     })),
-    scrollView: {
-      flex: 1,
-      backgroundColor: colors.background,
-    },
-    details: useAnimatedStyle(() => ({
-      opacity: loaded.value,
-      transform: [
-        { translateY: interpolate(loaded.value, [0, 1], [20, 0], 'clamp') },
-      ],
-    })),
   };
 
   // Стили
-  const styles = {
+  const styles = StyleSheet.create({
     overlay: {
       ...StyleSheet.absoluteFillObject,
       backgroundColor: 'rgba(0,0,0,.25)',
     },
+    scrollView: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
     closeIcon: {
       zIndex: 10,
-      top: margin,
+      top: margin + 20,
       right: margin,
       opacity: 0.75,
       color: colors.text,
@@ -174,7 +102,6 @@ function BookDetailsScreen({ navigation, route }) {
     },
     scrollContainer: {
       paddingTop: HEADER,
-      paddingBottom: status + 50,
     },
     detailsBox: {
       borderRadius: 10,
@@ -230,69 +157,68 @@ function BookDetailsScreen({ navigation, route }) {
     addIcon: {
       top: 3,
     },
-  };
+  });
 
   return (
-    <>
-      <View style={styles.overlay} />
-      <PanGestureHandler
-        ref={panRef}
-        failOffsetY={-5}
-        failOffsetX={-5}
-        activeOffsetY={5}
-        activeOffsetX={25}
-        onHandlerStateChange={gestureHandler}
-      >
-        <Animated.View style={anims.screen}>
-          {ios && <StatusBar hidden={useIsFocused()} animated />}
-          <BookHeader scrollY={scrollY} book={item} />
-          <AntDesign size={27} name="close" onPress={goBack} style={styles.closeIcon} />
+    <View style={styles.overlay}>
+      <Animated.View style={anims.screen}>
+        <BookHeader scrollY={scrollY} book={book} />
+        <AntDesign size={27} name="close" onPress={goBack} style={styles.closeIcon} />
 
-          <Animated.View style={anims.scrollView}>
-            <AnimatedScrollView
-              onScroll={scrollHandler}
-              scrollEventThrottle={1}
-              contentContainerStyle={styles.scrollContainer}
-            >
-              <View style={styles.detailsBox}>
-                <View style={styles.detailsRow}>
-                  <Text center size={13}>RATING</Text>
-                  <Text bold style={styles.subDetails}>{item.avgRating}</Text>
-                </View>
-                <View style={[styles.detailsRow, styles.detailsRowBorder]}>
-                  <Text center size={13}>PAGES</Text>
-                  <Text bold style={styles.subDetails}>{item.numPages}</Text>
-                </View>
-                <Pressable onPress={openSheet} style={styles.detailsRow}>
-                  <Text center size={13}>STATUS</Text>
-                  <Text bold color={colors.primary} style={styles.subDetails}>{item ? item.status : '-'}</Text>
-                </Pressable>
+        <View style={styles.scrollView}>
+          <AnimatedScrollView
+            onScroll={scrollHandler}
+            scrollEventThrottle={1}
+            contentContainerStyle={styles.scrollContainer}
+          >
+            <View style={styles.detailsBox}>
+              <View style={styles.detailsRow}>
+                <Text center size={13}>РЕЙТИНГ</Text>
+                <Text bold style={styles.subDetails}>{book.avgRating}</Text>
               </View>
-
-              <Animated.View style={anims.details}>
-                <View style={styles.authorBox}>
-                  <Image source={{ uri: author?.image_url }} style={styles.authorImage} />
-                  <View>
-                    <Text bold size={17}>{author?.name || '...'}</Text>
-                    <Text numberOfLines={2} style={styles.authorDetails}>
-                      {author?.about.replace(/(<([^>]+)>)/ig, '')}
-                    </Text>
-                  </View>
-                </View>
-                <Text size={16} numberOfLines={10} style={styles.aboutBook}>
-                  {fullBook?.description.replace(/(<([^>]+)>)/ig, ' ')}
+              <View style={[styles.detailsRow, styles.detailsRowBorder]}>
+                <Text center size={13}>СТРАНИЦЫ</Text>
+                <Text bold style={styles.subDetails}>{book.numPages}</Text>
+              </View>
+              <Pressable onPress={openSheet} style={styles.detailsRow}>
+                <Text center size={13}>СТАТУС</Text>
+                <Text bold color={colors.primary} style={styles.subDetails}>
+                  {(() => {
+                    switch (book.status) {
+                      case 'Reading':
+                        return 'Читаю';
+                      case 'Completed':
+                        return 'Прочитано';
+                      case 'Wishlist':
+                        return 'Буду читать';
+                      default:
+                        return '';
+                    }
+                  })()}
                 </Text>
-                <List books={related} title="Связанное" navigation={navigation} />
-              </Animated.View>
-            </AnimatedScrollView>
+              </Pressable>
+            </View>
 
-            <Button onPress={openSheet} style={styles.addButton}>
-              <AntDesign size={21} name={getIcon(item?.status)} style={styles.addIcon} />
-            </Button>
-          </Animated.View>
-        </Animated.View>
-      </PanGestureHandler>
-    </>
+            <View>
+              <View style={styles.authorBox}>
+                <Image source={{ uri: book.author.image_url }} style={styles.authorImage} />
+                <View>
+                  <Text bold size={17}>{book.author.name}</Text>
+                  <Text numberOfLines={2} style={styles.authorDetails}>
+                    {book.author.about}
+                  </Text>
+                </View>
+              </View>
+              <Text size={16} numberOfLines={10} style={styles.aboutBook}>
+                {book.description}
+              </Text>
+              <List books={bookList.filter(el => book.relatedIds && book.relatedIds.includes(el.bookId))} title="Связанное" navigation={navigation} />
+            </View>
+
+          </AnimatedScrollView>
+        </View>
+      </Animated.View>
+    </View>
   );
 }
 
