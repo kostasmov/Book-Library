@@ -32,7 +32,7 @@ import { setModal } from '../components/StatusModal';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
-// Get icon for status button
+// ???
 const getIcon = (stat) => {
   switch (stat) {
     case 'Reading':
@@ -46,14 +46,16 @@ const getIcon = (stat) => {
   }
 };
 
-// Default screen
+// Страница с информацией о книге
 function BookDetailsScreen({ navigation, route }) {
   const { book } = route.params;
   const { books: bookList } = useBooksState();
+
   const [related, setRelated] = useState([]);
   const [fullBook, setFullBook] = useState(null);
   const [author, setAuthor] = useState(null);
   const [enabled, setEnabled] = useState(true);
+
   const panRef = useRef();
   const loaded = useSharedValue(0);
   const y = useSharedValue(0);
@@ -61,24 +63,24 @@ function BookDetailsScreen({ navigation, route }) {
   const moved = useSharedValue(0);
   const closing = useSharedValue(0.9);
   const scrollY = useSharedValue(0);
+
   const {
     margin, width, dark, colors, normalize, status, ios,
   } = useTheme();
   const HEADER = normalize(width + status, 500) + margin;
 
-  // Go back to previous screen
+  // Возврат на предыдущую страницу
   const goBack = () => {
     navigation.goBack();
-    Haptics.selectionAsync();
   };
 
-  // open book lists sheet
+  // ???
   const openSheet = () => {
     Haptics.selectionAsync();
     setModal(book);
   };
 
-  // Scroll handler
+  // ???
   const scrollHandler = useAnimatedScrollHandler(({ contentOffset }) => {
     scrollY.value = contentOffset.y;
     if (contentOffset.y <= 0 && !enabled) {
@@ -89,7 +91,7 @@ function BookDetailsScreen({ navigation, route }) {
     }
   });
 
-  // Pan gesture handler
+  // Закрытие страницы через свайп влево
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
       ctx.moved = moved.value;
@@ -103,7 +105,7 @@ function BookDetailsScreen({ navigation, route }) {
       x.value = ctx.startX + e.translationX;
 
       // closing screen? do it!
-      if ((moved.value >= 75 || ctx.velocity >= 750)) {
+      if ((moved.value >= 75)) {
         if (closing.value === 0.9) runOnJS(goBack)();
         closing.value = withTiming(0.25);
       }
@@ -122,14 +124,14 @@ function BookDetailsScreen({ navigation, route }) {
 
   // Load book details
   useEffect(() => {
-    Promise.resolve(item).then(bookContent=>{
+    Promise.resolve(item).then(bookContent => {
       setFullBook(bookContent)
-      setAuthor(bookContent.author||{});
-      const relatedBooks = bookList.filter(el=>bookContent.relatedIds&&bookContent.relatedIds.includes(el.bookId))
+      setAuthor(bookContent.author || {});
+      const relatedBooks = bookList.filter(el => bookContent.relatedIds && bookContent.relatedIds.includes(el.bookId))
       setRelated(relatedBooks)
       loaded.value = withTiming(1);
     })
-  },[book]);
+  }, [book]);
 
   // Screen anims
   const anims = {
@@ -156,7 +158,7 @@ function BookDetailsScreen({ navigation, route }) {
     })),
   };
 
-  // Styles
+  // Стили
   const styles = {
     overlay: {
       ...StyleSheet.absoluteFillObject,
@@ -230,8 +232,6 @@ function BookDetailsScreen({ navigation, route }) {
     },
   };
 
-
-  // Render book details
   return (
     <>
       <View style={styles.overlay} />
@@ -282,7 +282,7 @@ function BookDetailsScreen({ navigation, route }) {
                 <Text size={16} numberOfLines={10} style={styles.aboutBook}>
                   {fullBook?.description.replace(/(<([^>]+)>)/ig, ' ')}
                 </Text>
-                <List books={related} title="Related Books" navigation={navigation} />
+                <List books={related} title="Связанное" navigation={navigation} />
               </Animated.View>
             </AnimatedScrollView>
 
