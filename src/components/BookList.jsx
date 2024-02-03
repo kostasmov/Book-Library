@@ -86,7 +86,7 @@ function BookList({ books, title }) {
         contentContainerStyle={styles.listContainer}
         data={books}
         keyExtractor={(i) => i.bookId}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <Pressable>
             <Book book={item} />
           </Pressable>

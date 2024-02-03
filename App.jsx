@@ -17,7 +17,6 @@ export default function App() {
     <NavigationContainer theme={getTheme(scheme)}>
       <StatusBar />
       <RootNavigator />
-      <ToastContainer />
     </NavigationContainer>
   );
 }

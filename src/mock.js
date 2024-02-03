@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const mockData = [
+let mockData = [
     {
         bookId: 1,
         status: '',

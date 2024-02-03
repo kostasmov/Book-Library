@@ -171,7 +171,7 @@ function BookSearchScreen({ navigation }) {
             key={book.bookId}
             onPress={() => onBookDetails(book)}
           >
-            <SearchBook book={book} bookList={bookList} />
+            <SearchBook book={book} />
           </Pressable>
         ))}
       </Animated.ScrollView>

@@ -41,9 +41,10 @@ function BookListScreen({ navigation }) {
     dark, width, colors, margin, navbar, normalize, ios,
   } = useTheme();
   const HEADER = normalize(300, 400);
+  const { books } = useBooksState();
+
   const scrollY = useSharedValue(0);
   const loaded = useSharedValue(0);
-  const { books } = useBooksState();
 
   // Замедленная прогрузка экрана
   const onLayout = () => {
@@ -59,7 +60,7 @@ function BookListScreen({ navigation }) {
 
   // Переход на экран поиска книги
   const searchBooks = () => {
-    navigation.push('BookSearch', { bookList: books });
+    navigation.push('BookSearch');
   };
 
   // Стили

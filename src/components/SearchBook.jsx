@@ -18,11 +18,10 @@ const Rating = React.memo(({ rating }) => (
 ));
 
 // Иконка книги при поиске
-function Book({ book, bookList }) {
+function Book({ book }) {
   const { margin, colors, normalize } = useTheme();
   const BOOKW = normalize(120, 150);
   const BOOKH = BOOKW * 1.5;
-  const item = bookList.find((b) => b.bookId === book.bookId);
 
   // стили
   const styles = {
@@ -46,8 +45,14 @@ function Book({ book, bookList }) {
       justifyContent: 'center',
       paddingLeft: margin * 1.5,
     },
-    bookTitle: {
+    bookAuthor: {
       marginVertical: margin / 3,
+    },
+    bookTitle: {
+      marginTop: margin,
+      fontSize: 17,
+      numberOfLines: 2,
+      fontWeight: "bold",
     },
   };
 
@@ -60,10 +65,10 @@ function Book({ book, bookList }) {
       </SharedElement>
 
       <View style={styles.bookDetails}>
-        {item?.status && (
+        {book?.status && (
           <Text bold color={colors.primary}>
             {(() => {
-              switch (item.status) {
+              switch (book.status) {
                 case 'Reading':
                   return 'Читаю';
                 case 'Completed':
@@ -76,11 +81,11 @@ function Book({ book, bookList }) {
             })()}
           </Text>
         )}
-        <Text bold size={17} numberOfLines={2}>
-          {book.bookTitleBare}
-        </Text>
         <Text style={styles.bookTitle}>
           {book.title}
+        </Text>
+        <Text style={styles.bookAuthor}>
+          {book.author.name}
         </Text>
         <Rating rating={book.avgRating} />
       </View>
