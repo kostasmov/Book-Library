@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 
 import Animated, {
-  interpolate,
   withTiming,
   useAnimatedStyle,
   useSharedValue,
@@ -26,8 +25,8 @@ import { useBooksState } from '../BookStore';
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 // Преобразование статуса книги на русский
-const getStatus = (state) => {
-  switch (state) {
+const getStatus = (stat) => {
+  switch (stat) {
     case 'Reading':
       return 'Читаю';
     case 'Completed':
@@ -42,12 +41,9 @@ const getStatus = (state) => {
 // Страница с информацией о книге
 function BookDetailsScreen({ navigation, route }) {
   const { book } = route.params;
-  const { books: bookList } = useBooksState();
-  const [bookStatus, setStatus] = useState(getStatus(book.status));
+  const { books: bookList, setBooks } = useBooksState();
+  const [bookStatus, setStatus] = useState(book.status);
 
-  const y = useSharedValue(0);
-  const x = useSharedValue(0);
-  const moved = useSharedValue(0);
   const closing = useSharedValue(0.9);
   const scrollY = useSharedValue(0);
 
@@ -61,20 +57,36 @@ function BookDetailsScreen({ navigation, route }) {
     navigation.goBack();
   };
 
-  // ЗДЕСЬ ДОЛЖНА БЫТЬ ФУНКЦИЯ СМЕНЫ СТАТУСА КНИГИ
-  const openSheet = () => {
-    setStatus(() => {
+  // Изменение статуса книги
+  const changeStatus = () => {
+    const newStatus = (() => {
       switch (bookStatus) {
-        case 'Буду читать':
-          return '-';
-        case 'Читаю':
-          return 'Прочитано';
-        case 'Прочитано':
-          return 'Буду читать';
+        case 'Wishlist':
+          return 'None';
+        case 'Reading':
+          return 'Completed';
+        case 'Completed':
+          return 'Wishlist';
         default:
-          return 'Читаю';
+          return 'Reading';
       }
+    })();
+
+    setStatus(newStatus);
+    console.log(newStatus);
+
+    // Обновление статуса в массиве книг
+    const updatedBooks = bookList.map(b => {
+      if (b.bookId === book.bookId) {
+        return {
+          ...book,
+          status: newStatus
+        };
+      }
+      return b;
     });
+
+    setBooks(updatedBooks);
   };
 
   // Стили анимации
@@ -83,12 +95,6 @@ function BookDetailsScreen({ navigation, route }) {
       flex: 1,
       opacity: withTiming(closing.value < 0.9 ? 0 : 1),
       overflow: 'hidden',
-      transform: [
-        { translateX: x.value },
-        { translateY: y.value },
-        { scale: closing.value < 0.9 ? closing.value : interpolate(moved.value, [0, 75], [1, 0.9], 'clamp') },
-      ],
-      borderRadius: interpolate(moved.value, [0, 10], [0, 30], 'clamp'),
     })),
   };
 
@@ -177,10 +183,10 @@ function BookDetailsScreen({ navigation, route }) {
                 <Text center size={13}>СТРАНИЦЫ</Text>
                 <Text bold style={styles.subDetails}>{book.numPages}</Text>
               </View>
-              <Pressable onPress={openSheet} style={styles.detailsRow}>
+              <Pressable onPress={changeStatus} style={styles.detailsRow}>
                 <Text center size={13}>СТАТУС</Text>
                 <Text bold color={colors.primary} style={styles.subDetails}>
-                  {bookStatus}
+                  {getStatus(bookStatus)}
                 </Text>
               </Pressable>
             </View>

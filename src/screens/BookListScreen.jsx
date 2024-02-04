@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Pressable } from 'react-native';
 
 import Animated, {
@@ -41,7 +41,7 @@ function BookListScreen({ navigation }) {
     dark, width, colors, margin, navbar, normalize, ios,
   } = useTheme();
   const HEADER = normalize(300, 400);
-  const { books } = useBooksState();
+  const { books, setBooks } = useBooksState();
 
   const scrollY = useSharedValue(0);
   const loaded = useSharedValue(0);

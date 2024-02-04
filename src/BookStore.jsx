@@ -5,6 +5,9 @@ import setMockData from './mock.js'
 // Реактивный объект с информацией о книгах
 const state = proxy({
   books: [],
+  setBooks: (updatedBooks) => {
+    state.books = updatedBooks;
+  },
 });
 
 // Загрузка книг из хранилища
@@ -28,24 +31,3 @@ setMockData().then(() => {
 
 // Глобальный экспорт данных из books
 export const useBooksState = () => useSnapshot(state);
-
-// ???
-/*export const setBookState = () => ({
-  addBook: (book, status) => {
-    state.books.unshift({ ...book, status });
-    saveBooks();
-    console.log('addBooks');
-  },
-  updateBook: (book, status) => {
-    const index = state.books.findIndex((b) => b.bookId === book.bookId);
-    if (index !== -1) state.books[index] = { ...book, status };
-    saveBooks();
-    console.log('updateBooks');
-  },
-  removeBook: (book) => {
-    const index = state.books.findIndex((b) => b.bookId === book.bookId);
-    if (index !== -1) state.books.splice(index, 1);
-    saveBooks();
-    console.log('removeBooks');
-  },
-});*/
