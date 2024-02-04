@@ -10,16 +10,13 @@ import {
 import Animated, {
   interpolate,
   withTiming,
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
-  useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
 
 import Text from '../components/Text';
 import List from '../components/BookList';
@@ -28,13 +25,26 @@ import { useBooksState } from '../BookStore';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
+// Преобразование статуса книги на русский
+const getStatus = (state) => {
+  switch (state) {
+    case 'Reading':
+      return 'Читаю';
+    case 'Completed':
+      return 'Прочитано';
+    case 'Wishlist':
+      return 'Буду читать';
+    default:
+      return '-';
+  }
+};
+
 // Страница с информацией о книге
 function BookDetailsScreen({ navigation, route }) {
   const { book } = route.params;
   const { books: bookList } = useBooksState();
-  const [enabled, setEnabled] = useState(true);
+  const [bookStatus, setStatus] = useState(getStatus(book.status));
 
-  const loaded = useSharedValue(0);
   const y = useSharedValue(0);
   const x = useSharedValue(0);
   const moved = useSharedValue(0);
@@ -42,7 +52,7 @@ function BookDetailsScreen({ navigation, route }) {
   const scrollY = useSharedValue(0);
 
   const {
-    margin, width, dark, colors, normalize, status, ios,
+    margin, width, dark, colors, normalize, status,
   } = useTheme();
   const HEADER = normalize(width + status, 500) + margin;
 
@@ -53,19 +63,19 @@ function BookDetailsScreen({ navigation, route }) {
 
   // ЗДЕСЬ ДОЛЖНА БЫТЬ ФУНКЦИЯ СМЕНЫ СТАТУСА КНИГИ
   const openSheet = () => {
-    Haptics.selectionAsync();
+    setStatus(() => {
+      switch (bookStatus) {
+        case 'Буду читать':
+          return '-';
+        case 'Читаю':
+          return 'Прочитано';
+        case 'Прочитано':
+          return 'Буду читать';
+        default:
+          return 'Читаю';
+      }
+    });
   };
-
-  // Анимация прокрутки
-  const scrollHandler = useAnimatedScrollHandler(({ contentOffset }) => {
-    scrollY.value = contentOffset.y;
-    if (contentOffset.y <= 0 && !enabled) {
-      runOnJS(setEnabled)(true);
-    }
-    if (contentOffset.y > 0 && enabled) {
-      runOnJS(setEnabled)(false);
-    }
-  });
 
   // Стили анимации
   const anims = {
@@ -145,32 +155,19 @@ function BookDetailsScreen({ navigation, route }) {
       lineHeight: 25,
       textAlign: 'justify',
     },
-    addButton: {
-      width: 60,
-      height: 60,
-      right: margin,
-      bottom: margin,
-      borderRadius: 60,
-      position: 'absolute',
-      backgroundColor: colors.button,
-    },
-    addIcon: {
-      top: 3,
-    },
   });
 
   return (
     <View style={styles.overlay}>
       <Animated.View style={anims.screen}>
-        <BookHeader scrollY={scrollY} book={book} />
-        <AntDesign size={27} name="close" onPress={goBack} style={styles.closeIcon} />
-
         <View style={styles.scrollView}>
           <AnimatedScrollView
-            onScroll={scrollHandler}
             scrollEventThrottle={1}
             contentContainerStyle={styles.scrollContainer}
           >
+            <BookHeader scrollY={scrollY} book={book} />
+            <AntDesign size={27} name="close" onPress={goBack} style={styles.closeIcon} />
+
             <View style={styles.detailsBox}>
               <View style={styles.detailsRow}>
                 <Text center size={13}>РЕЙТИНГ</Text>
@@ -183,18 +180,7 @@ function BookDetailsScreen({ navigation, route }) {
               <Pressable onPress={openSheet} style={styles.detailsRow}>
                 <Text center size={13}>СТАТУС</Text>
                 <Text bold color={colors.primary} style={styles.subDetails}>
-                  {(() => {
-                    switch (book.status) {
-                      case 'Reading':
-                        return 'Читаю';
-                      case 'Completed':
-                        return 'Прочитано';
-                      case 'Wishlist':
-                        return 'Буду читать';
-                      default:
-                        return '';
-                    }
-                  })()}
+                  {bookStatus}
                 </Text>
               </Pressable>
             </View>
@@ -214,7 +200,6 @@ function BookDetailsScreen({ navigation, route }) {
               </Text>
               <List books={bookList.filter(el => book.relatedIds && book.relatedIds.includes(el.bookId))} title="Связанное" navigation={navigation} />
             </View>
-
           </AnimatedScrollView>
         </View>
       </Animated.View>
