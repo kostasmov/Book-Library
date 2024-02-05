@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native';
 
 import Text from './Text';
 
-// Themeable Button
+// Кнопка на начальной странице
 function ThemedButton({
   onPress, style, textStyle, children,
 }) {

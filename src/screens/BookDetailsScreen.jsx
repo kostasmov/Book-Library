@@ -73,7 +73,6 @@ function BookDetailsScreen({ navigation, route }) {
     })();
 
     setStatus(newStatus);
-    console.log(newStatus);
 
     // Обновление статуса в массиве книг
     const updatedBooks = bookList.map(b => {
