@@ -41,8 +41,9 @@ const getStatus = (stat) => {
 // Страница с информацией о книге
 function BookDetailsScreen({ navigation, route }) {
   const { book } = route.params;
-  const { books: bookList, setBooks } = useBooksState();
+  const { books: bookList, authors, setBooks } = useBooksState();
   const [bookStatus, setStatus] = useState(book.status);
+  const author = authors.find(a => a.authorId === book.authorId);
 
   const closing = useSharedValue(0.9);
   const scrollY = useSharedValue(0);
@@ -192,11 +193,11 @@ function BookDetailsScreen({ navigation, route }) {
 
             <View>
               <View style={styles.authorBox}>
-                <Image source={{ uri: book.author.image_url }} style={styles.authorImage} />
+                <Image source={{ uri: author.image_url }} style={styles.authorImage} />
                 <View>
-                  <Text bold size={17}>{book.author.name}</Text>
+                  <Text bold size={17}>{author.name}</Text>
                   <Text numberOfLines={2} style={styles.authorDetails}>
-                    {book.author.about}
+                    {author.about}
                   </Text>
                 </View>
               </View>

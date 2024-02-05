@@ -24,7 +24,7 @@ function BookSearchScreen({ navigation }) {
   const {
     colors, height, margin, status, navbar,
   } = useTheme();
-  const { books: bookList } = useBooksState();
+  const { books: bookList, authors } = useBooksState();
   const [query, setQuery] = useState('');
   const [books, setBooks] = useState([]);
 
@@ -43,7 +43,7 @@ function BookSearchScreen({ navigation }) {
     if (query.length > 1) {
       const matchList = bookList.filter(item =>
         item.title.toLowerCase().includes(query.toLowerCase()) ||
-        item.author.name.toLowerCase().includes(query.toLowerCase())
+        authors.find(a => a.authorId === item.authorId).name.toLowerCase().includes(query.toLowerCase())
       );
       setBooks(matchList);
     }

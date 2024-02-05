@@ -5,15 +5,20 @@ import { SharedElement } from 'react-navigation-shared-element';
 import { useTheme } from '@react-navigation/native';
 
 import Text from './Text';
+import { useBooksState } from '../BookStore';
 
 // Баннер страницы книги
 function BookHeader({ scrollY, book }) {
   const {
     width, margin, colors, normalize, navbar, status,
   } = useTheme();
+
   const BOOKW = normalize(140, 180);
   const BOOKH = BOOKW * 1.5;
   const HEADER = normalize(width + status, 500);
+
+  const { authors } = useBooksState();
+  const author = authors.find(a => a.authorId === book.authorId);
 
   // Стили анимации
   const anims = {
@@ -24,7 +29,6 @@ function BookHeader({ scrollY, book }) {
       paddingTop: status,
       position: 'absolute',
       justifyContent: 'center',
-      //shadowOffset: { height: 2 },
       backgroundColor: colors.card,
       shadowOpacity: interpolate(scrollY.value, [HEADER - navbar - 20, HEADER - navbar], [0, 0.25], 'clamp'),
       transform: [
@@ -99,12 +103,12 @@ function BookHeader({ scrollY, book }) {
 
       <Animated.View style={anims.title}>
         <Text bold center size={21} numberOfLines={2}>{book.bookTitleBare}</Text>
-        <Text size={17} style={styles.author}>{`${book.author.name}`}</Text>
+        <Text size={17} style={styles.author}>{`${author.name}`}</Text>
       </Animated.View>
 
       <Animated.View style={anims.title2}>
         <Text numberOfLines={1} bold size={17}>
-          {book.bookTitleBare}
+          {book.title}
         </Text>
       </Animated.View>
     </Animated.View>

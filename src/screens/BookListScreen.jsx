@@ -41,7 +41,7 @@ function BookListScreen({ navigation }) {
     dark, width, colors, margin, navbar, normalize, ios,
   } = useTheme();
   const HEADER = normalize(300, 400);
-  const { books, setBooks } = useBooksState();
+  const { books } = useBooksState();
 
   const scrollY = useSharedValue(0);
   const loaded = useSharedValue(0);

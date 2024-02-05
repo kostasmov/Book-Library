@@ -5,6 +5,7 @@ import { useTheme } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 
 import Text from './Text';
+import { useBooksState } from '../BookStore';
 
 // Рейтинг в виде звёзд
 const Rating = React.memo(({ rating }) => (
@@ -22,6 +23,9 @@ function Book({ book }) {
   const { margin, colors, normalize } = useTheme();
   const BOOKW = normalize(120, 150);
   const BOOKH = BOOKW * 1.5;
+
+  const { authors } = useBooksState();
+  const author = authors.find(a => a.authorId === book.authorId);
 
   // стили
   const styles = {
@@ -85,7 +89,7 @@ function Book({ book }) {
           {book.title}
         </Text>
         <Text style={styles.bookAuthor}>
-          {book.author.name}
+          {author.name}
         </Text>
         <Rating rating={book.avgRating} />
       </View>
