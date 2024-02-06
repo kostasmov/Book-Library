@@ -55,7 +55,6 @@ function Book({ book }) {
     bookTitle: {
       marginTop: margin,
       fontSize: 17,
-      numberOfLines: 2,
       fontWeight: "bold",
     },
   };
