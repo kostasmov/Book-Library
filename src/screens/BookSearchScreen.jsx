@@ -43,7 +43,7 @@ function BookSearchScreen({ navigation }) {
     if (query.length > 1) {
       const matchList = bookList.filter(item =>
         item.title.toLowerCase().includes(query.toLowerCase()) ||
-        authors.find(a => a.authorId === item.authorId).name.toLowerCase().includes(query.toLowerCase())
+        authors?.find(a => a.authorId === item.authorId).name.toLowerCase().includes(query.toLowerCase())
       );
       setBooks(matchList);
     }

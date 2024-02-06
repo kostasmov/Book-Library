@@ -26,7 +26,7 @@ const LottieViewAnimated = Animated.createAnimatedComponent(LottieView);
 // Приветствие относительно текущего времени суток
 const getGreeting = () => {
   const hours = (new Date()).getHours();
-  if (hours < 12) {
+  if (hours >= 6 && hours <= 12) {
     return 'Доброе утро!';
   }
   if (hours >= 12 && hours <= 17) {

@@ -25,7 +25,6 @@ const setInitialData = async () => {
       await AsyncStorage.setItem('books', JSON.stringify(initialBooks));
     }
 
-    const json2 = await AsyncStorage.getItem('authors');
     await AsyncStorage.setItem('authors', JSON.stringify(initialAuthors));
   } catch (error) {
     console.error(error);
@@ -37,6 +36,7 @@ async function loadBooks() {
   try {
     const booksJSON = await AsyncStorage.getItem('books');
     state.setBooks(JSON.parse(booksJSON));
+
     const authorsJSON = await AsyncStorage.getItem('authors');
     state.authors = JSON.parse(authorsJSON);
   } catch (error) {

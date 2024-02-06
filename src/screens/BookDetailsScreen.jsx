@@ -16,6 +16,7 @@ import Animated, {
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 
 import Text from '../components/Text';
 import List from '../components/BookList';
@@ -87,6 +88,7 @@ function BookDetailsScreen({ navigation, route }) {
     });
 
     setBooks(updatedBooks);
+    Haptics.selectionAsync();
   };
 
   // Стили анимации

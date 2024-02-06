@@ -1,32 +1,104 @@
 [
     {
         "authorId": 1,
-        "name": "David King",
-        "image_url": "https://th.bing.com/th/id/OIP.p0a8fUSQQAd99wh0AZdPJAHaEo?w=155&h=182&c=7&r=0&o=5&pid=1.7",
-        "about": "дурачок какойто"
+        "name": "Лев Толстой",
+        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHzJLN531aLhWmbZhKhsu8MK6IGPC5wjetN8KThY_4E9aWY8JvcBKlqVu8vYx4aN8cQdc&usqp=CAU",
+        "about": "Известный русский писатель, автор таких произведений, как 'Война и мир' и 'Анна Каренина'."
     },
     {
         "authorId": 2,
-        "name": "David King father",
-        "image_url": "https://th.bing.com/th/id/OIP.p0a8fUSQQAd99wh0AZdPJAHaEo?w=155&h=182&c=7&r=0&o=5&pid=1.7",
-        "about": "dwqnjkdwnqwjk 1223"
+        "name": "Александр Пушкин",
+        "image_url": "https://avatars.mds.yandex.net/get-kinopoisk-image/1704946/7b9ad0b1-d111-4f20-9932-0f8833cc1527/220x330",
+        "about": "Великий русский поэт, основатель современного русского литературного языка, автор 'Евгения Онегина' и многих других произведений."
     },
     {
         "authorId": 3,
-        "name": "Tom",
-        "image_url": "https://th.bing.com/th/id/OIP.X550xngH_XGXcgSogi1XLAHaEK?w=304&h=180&c=7&r=0&o=5&pid=1.7",
-        "about": "dwqnjkdwnqwjk 1223"
+        "name": "Николай Гоголь",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/N.Gogol_by_F.Moller_%281840%2C_Tretyakov_gallery%29.jpg",
+        "about": "Выдающийся русский прозаик, драматург, критик, публицист, признанный одним из классиков русской литературы."
     },
     {
         "authorId": 4,
-        "name": "Jerry",
-        "image_url": "https://th.bing.com/th/id/OIP.X550xngH_XGXcgSogi1XLAHaEK?w=304&h=180&c=7&r=0&o=5&pid=1.7",
-        "about": "dwqnjkdwnqwjk 1223"
+        "name": "Михаил Шолохов",
+        "image_url": "https://cdn.fishki.net/upload/post/2016/05/24/1960655/tn/8e48895fb3324a35e88844c08973e818.jpg",
+        "about": "Автор 181 книги. Из известных произведений можно выделить: 'Тихий Дон. Том I', 'Поднятая целина', 'Донские рассказы'."
     },
     {
         "authorId": 5,
-        "name": "Kenin",
-        "image_url": "https://th.bing.com/th/id/OIP.9Hc_BKrM_ONJ0wcxJ-liAAHaEK?w=278&h=180&c=7&r=0&o=5&pid=1.7",
-        "about": "dwqnjkdwnqwjk 1223"
+        "name": "Михаил Булгаков",
+        "image_url": "https://cdn.culture.ru/images/2aeda82d-7e3a-5654-bd23-68611f2bb512",
+        "about": "Советский писатель, драматург, театральный режиссер и актер. Автор романов, повестей, рассказов, фельетонов, пьес, инсценировок, киносценариев и оперных либретто."
+    },
+    {
+        "authorId": 6,
+        "name": "Фёдор Достоевский",
+        "image_url": "https://www.satirikon.ru/upload/resize_cache/iblock/e5c/720_540_0/x53jiegqwrmd07vnmtep2i0k0p24w0b9.jpg",
+        "about": "Великий русский писатель, автор таких произведений, как 'Преступление и наказание', 'Идиот', 'Бесы' и 'Братья Карамазовы'."
+    },
+    {
+        "authorId": 7,
+        "name": "Джон Рональд Руэл Толкин",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/J._R._R._Tolkien%2C_ca._1925.jpg/274px-J._R._R._Tolkien%2C_ca._1925.jpg",
+        "about": "Всемирно известный писатель-фантаст, автор повести 'Хоббит, или Туда и обратно', трилогии 'Властелин колец' и их предыстории."
+    },
+    {
+        "authorId": 8,
+        "name": "Братья Стругацкие",
+        "image_url": "https://fantlab.ru/images/autors/52",
+        "about": "Аркадий и Борис Натанович Стругацкие — русские советские писатели, сценаристы, одни из немногих советских авторов научной и социальной фантастики."
+    },
+    {
+        "authorId": 9,
+        "name": "Александр Дюма",
+        "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCZ4Mi8qCQcsjpVp-lesLTJNYx3P8a1MIRL5av2tFhcK6eM1me4N1kqvUVn3jj_iIQvc0&usqp=CAU",
+        "about": "Французский писатель, драматург и журналист. Один из самых читаемых французских авторов, мастер приключенческого романа.ЫЫ"
+    },
+    {
+        "authorId": 10,
+        "name": "Жюль Верн",
+        "image_url": "https://priazovskoe.ru/media/project_mo_398/0a/e7/9c/8b/e8/5e/pisatel1.jpg",
+        "about": "Французский писатель, известный как основатель жанра научной фантастики."
+    },
+    {
+        "authorId": 11,
+        "name": "Джером Дэвид Сэлинджер",
+        "image_url": "https://uramdb.ru/uploads/2023/2/16/4863516-dzherom-devid-selindzher_medium.jpg",
+        "about": "Дж. Д. Сэлинджер был американским писателем, классиком литературы США XX века."
+    },
+    {
+        "authorId": 12,
+        "name": "Станислав Лем",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/St_Lem_resize.jpg/220px-St_Lem_resize.jpg",
+        "about": "Станислав Лем был польским философом, футурологом и писателем."
+    },
+    {
+        "authorId": 13,
+        "name": "Филипп Дик",
+        "image_url": "https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/671cb01c-ac31-4c07-8347-5985754c3e64/220x330",
+        "about": "Американский писатель, получивший известность как автор произведений в жанре научной фантастики."
+    },
+    {
+        "authorId": 14,
+        "name": "Брэм Стокер",
+        "image_url": "https://www.vokrug.tv/pic/person/2/c/a/6/2ca61985c8b8a10fbbf50a2867e23233.jpeg",
+        "about": "Ирландский писатель, автор знаменитого романа 'Дракула'."
+    },
+    {
+        "authorId": 15,
+        "name": "Александр Беляев",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/92/Alexander_Belayev.jpg",
+        "about": "Советский писатель, автор научно-фантастических произведений, включая 'Голову профессора Доуэля'."
+    },
+    {
+        "authorId": 16,
+        "name": "Джордж Оруэлл",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/George_Orwell_press_photo.jpg/230px-George_Orwell_press_photo.jpg",
+        "about": "Английский писатель, журналист, эссеист и критик. Он наиболее известен как автор романа-антиутопии '1984' и сатирической повести 'Скотный двор'."
+    },
+    {
+        "authorId": 17,
+        "name": "Марио Пьюзо",
+        "image_url": "https://img.labirint.ru/images/upl/descripts/pic_1549031079.jpg",
+        "about": "Американский писатель итальянского происхождения, критик, сценарист и беллетрист. Он наиболее известен как автор популярного романа 'Крестный отец'."
     }
 ]
