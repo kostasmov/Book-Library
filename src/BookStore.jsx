@@ -17,28 +17,20 @@ const state = proxy({
   },
 });
 
-// Запись начальных данных в AsyncStorage
-const setInitialData = async () => {
-  try {
-    const json1 = await AsyncStorage.getItem('books');
-    if (json1 === null) {
-      await AsyncStorage.setItem('books', JSON.stringify(initialBooks));
-    }
-
-    await AsyncStorage.setItem('authors', JSON.stringify(initialAuthors));
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// Загрузка данных из хранилища в state
-async function loadBooks() {
+// Загрузка данных
+const loadData = async () => {
   try {
     const booksJSON = await AsyncStorage.getItem('books');
-    state.setBooks(JSON.parse(booksJSON));
-
     const authorsJSON = await AsyncStorage.getItem('authors');
-    state.authors = JSON.parse(authorsJSON);
+
+    if (booksJSON === null || authorsJSON === null) {
+      state.books = initialBooks;
+      state.authors = initialAuthors;
+      saveBooks();
+    } else {
+      state.books = JSON.parse(booksJSON);
+      state.authors = JSON.parse(authorsJSON);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -58,5 +50,4 @@ const saveBooks = async () => {
 export const useBooksState = () => useSnapshot(state);
 
 // Загрузка книг при запуске приложения
-setInitialData();
-loadBooks();
+loadData();

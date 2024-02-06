@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Book Library",
-    "slug": "book-app",
+    "slug": "book-library",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,10 +26,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ff6b6b"
-      }
+      },
+      "package": "com.agmund.booklibrary"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "684c7a6d-b8c4-4aff-bf11-76481af2a246"
+      }
+    },
+    "owner": "agmund"
   }
 }
